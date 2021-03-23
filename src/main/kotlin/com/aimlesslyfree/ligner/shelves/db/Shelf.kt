@@ -11,5 +11,6 @@ data class Shelf(
         @Id
         @JsonSerialize(using = ToStringSerializer::class)
         val id: ObjectId = ObjectId(),
+        val userId: Int,
         val name: String
 )

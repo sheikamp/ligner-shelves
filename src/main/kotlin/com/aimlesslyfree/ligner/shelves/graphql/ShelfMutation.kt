@@ -12,8 +12,8 @@ class ShelfMutation(
 ) {
 
     @DgsData(parentType = "Mutation", field = "addShelf")
-    fun addShelf(name: String): Shelf = runBlocking {
-        val newShelf = Shelf(name = name)
+    fun addShelf(userId: Int, name: String): Shelf = runBlocking {
+        val newShelf = Shelf(userId = userId, name = name)
         shelfRepository.save(newShelf)
     }
 }

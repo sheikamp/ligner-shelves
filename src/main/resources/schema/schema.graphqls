@@ -1,11 +1,11 @@
 type Query {
-    shelves(nameFilter: String): [Shelf]
+    shelves(userIdFilter: Int!): [Shelf!]!
 }
 
 type Mutation {
-    addShelf(name: String): Shelf
+    addShelf(userId: Int!, name: String!): Shelf!
 }
 
 type Shelf {
-    name: String
+    name: String!
 }

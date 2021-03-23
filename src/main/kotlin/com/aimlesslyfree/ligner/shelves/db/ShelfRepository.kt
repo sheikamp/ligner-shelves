@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ShelfRepository: CoroutineCrudRepository<Shelf, ObjectId> {
-    fun findByName(name: String): Flow<Shelf>
+
+    fun findByUserId(userId: Int): Flow<Shelf>
 }

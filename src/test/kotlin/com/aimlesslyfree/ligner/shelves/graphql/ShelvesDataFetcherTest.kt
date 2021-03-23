@@ -21,27 +21,12 @@ class ShelvesDataFetcherTest(
     fun tearDown() = runBlocking { shelfRepository.deleteAll() }
 
     @Test
-    fun `should return shelves`() = runBlocking<Unit> {
-        val currentlyReading = Shelf(name = "Currently reading")
-        val wantToRead = Shelf(name = "Want to read")
-        val shelves = shelfRepository.saveAll(listOf(currentlyReading, wantToRead)).toList()
+    fun `should return shelves filtered by user id`() = runBlocking<Unit> {
+        val currentlyReading = shelfRepository.save(Shelf(userId = 1, name = "Currently reading"))
+        val wantToRead = shelfRepository.save(Shelf(userId = 2, name = "Want to read"))
 
         val shelfNames = dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
-                "{ shelves { name } }",
-                "data.shelves[*].name"
-        )
-
-        assertThat(shelfNames).hasSize(2).containsAll(shelves.map { it.name })
-    }
-
-    @Test
-    fun `should return shelves filtered by name`() = runBlocking<Unit> {
-        val currentlyReading = Shelf(name = "Currently reading")
-        val wantToRead = Shelf(name = "Want to read")
-        val shelves = shelfRepository.saveAll(listOf(currentlyReading, wantToRead)).toList()
-
-        val shelfNames = dgsQueryExecutor.executeAndExtractJsonPath<List<String>>(
-                "{ shelves(nameFilter: \"${currentlyReading.name}\") { name } }",
+                "{ shelves(userIdFilter: 1) { name } }",
                 "data.shelves[*].name"
         )
 

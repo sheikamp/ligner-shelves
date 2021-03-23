@@ -26,12 +26,12 @@ class ShelfMutationTest(
         val newShelfName = "Want to read"
 
         val shelfName = dgsQueryExecutor.executeAndExtractJsonPath<String>(
-                "mutation { addShelf(name: \"$newShelfName\") { name } }",
+                "mutation { addShelf(userId: 1, name: \"$newShelfName\") { name } }",
                 "data.addShelf.name"
         )
 
         assertThat(shelfName).isEqualTo(newShelfName)
-        val shelves = shelfRepository.findByName(newShelfName).toList()
+        val shelves = shelfRepository.findAll().toList()
         assertThat(shelves).hasSize(1)
         assertThat(shelves[0].name).isEqualTo(newShelfName)
     }
