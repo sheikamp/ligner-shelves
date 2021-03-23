@@ -2,6 +2,10 @@ type Query {
     shelves(nameFilter: String): [Shelf]
 }
 
+type Mutation {
+    addShelf(name: String): Shelf
+}
+
 type Shelf {
     name: String
 }
