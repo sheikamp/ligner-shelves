@@ -1,0 +1,7 @@
+type Query {
+    shelves(nameFilter: String): [Shelf]
+}
+
+type Shelf {
+    name: String
+}
