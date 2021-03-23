@@ -4,8 +4,16 @@ type Query {
 
 type Mutation {
     addShelf(userId: Int!, name: String!): Shelf!
+    addBookToShelf(userId: Int!, shelfName: String!, author: String!, title: String!): Shelf
+    populateShelves(userId: Int!): [Shelf!]!
 }
 
 type Shelf {
     name: String!
+    books: [Book!]
+}
+
+type Book {
+    author: String!
+    title: String!
 }

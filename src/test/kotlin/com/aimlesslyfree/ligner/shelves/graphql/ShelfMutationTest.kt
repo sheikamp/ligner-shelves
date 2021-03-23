@@ -35,4 +35,26 @@ class ShelfMutationTest(
         assertThat(shelves).hasSize(1)
         assertThat(shelves[0].name).isEqualTo(newShelfName)
     }
+
+    @Test
+    fun `should add book to shelf`() = runBlocking<Unit> {
+        val shelf = shelfRepository.save(Shelf(userId = 1, name = "Want to read"))
+        val newBookTitle = "Chamber of secrets"
+
+        val bookTitle = dgsQueryExecutor.executeAndExtractJsonPath<String>(
+                """mutation { addBookToShelf(
+                    userId: ${shelf.userId}, 
+                    shelfName: "${shelf.name}", 
+                    author: "JK Rowling", 
+                    title: "$newBookTitle") 
+                    { books { title } } }""",
+                "data.addBookToShelf.books[0].title"
+        )
+
+        assertThat(bookTitle).isEqualTo(newBookTitle)
+        val shelves = shelfRepository.findAll().toList()
+        assertThat(shelves).hasSize(1)
+        assertThat(shelves[0].books).hasSize(1)
+        assertThat(shelves[0].books[0].title).isEqualTo(newBookTitle)
+    }
 }

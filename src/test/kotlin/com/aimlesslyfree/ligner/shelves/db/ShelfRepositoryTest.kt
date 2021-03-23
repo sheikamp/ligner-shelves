@@ -1,5 +1,6 @@
 package com.aimlesslyfree.ligner.shelves.db
 
+import com.aimlesslyfree.ligner.shelves.graphql.ShelfMutation.Companion.createFakeBooks
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
@@ -25,6 +26,19 @@ class ShelfRepositoryTest(
         val shelves = shelfRepository.findAll().toList()
         assertThat(shelves).hasSize(1)
         assertThat(shelves[0].name).isEqualTo(shelve.name)
+    }
+
+    @Test
+    fun `should store shelf with books`() = runBlocking<Unit> {
+        val books = createFakeBooks()
+        val shelve = Shelf(userId = 1, name = "Currently reading", books = books)
+
+        shelfRepository.save(shelve)
+
+        val shelves = shelfRepository.findAll().toList()
+        assertThat(shelves).hasSize(1)
+        assertThat(shelves[0].name).isEqualTo(shelve.name)
+        assertThat(shelves[0].books).hasSize(books.size).containsAll(books)
     }
 
     @Test

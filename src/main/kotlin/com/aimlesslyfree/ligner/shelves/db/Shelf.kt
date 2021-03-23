@@ -12,5 +12,6 @@ data class Shelf(
         @JsonSerialize(using = ToStringSerializer::class)
         val id: ObjectId = ObjectId(),
         val userId: Int,
-        val name: String
+        val name: String,
+        val books: MutableList<Book> = mutableListOf()
 )
